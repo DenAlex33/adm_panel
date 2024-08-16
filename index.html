@@ -113,7 +113,6 @@
     </footer>
 
     <script>
-        // Проверка доступности Telegram WebApp API
         if (window.Telegram && window.Telegram.WebApp) {
             console.log('Telegram Web App API доступен');
             Telegram.WebApp.expand();
@@ -122,7 +121,6 @@
             alert('Telegram Web App не поддерживается в этом браузере.');
         }
 
-        // Отправка команды в бота
         function sendCommand(command) {
             const loadingElement = document.getElementById('loading');
             loadingElement.style.display = 'block';
@@ -130,20 +128,19 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 Telegram.WebApp.sendData(command);
                 console.log('Команда отправлена:', command);
-                loadingElement.style.display = 'none';
+                setTimeout(() => loadingElement.style.display = 'none', 2000);
             } else {
                 alert('Telegram Web App не доступен.');
                 loadingElement.style.display = 'none';
             }
         }
 
-        // Отображение данных, полученных из WebApp
         function displayData(data) {
             const container = document.getElementById('data-container');
-            if (data && data.length > 0) {
+            if (Array.isArray(data) && data.length > 0) {
                 let html = '<table class="data-table"><thead><tr><th>Наименование</th><th>Цена</th><th>Количество</th></tr></thead><tbody>';
                 data.forEach(item => {
-                    html += `<tr><td>${item.name}</td><td>${item.price}</td><td>${item.quantity}</td></tr>`;
+                    html += `<tr><td>${item.name || 'Не указано'}</td><td>${item.price || 'Не указана'}</td><td>${item.quantity || 'Не указано'}</td></tr>`;
                 });
                 html += '</tbody></table>';
                 container.innerHTML = html;
@@ -152,7 +149,6 @@
             }
         }
 
-        // Обработка сообщений от бота
         window.addEventListener('message', function(event) {
             console.log('Сообщение получено:', event.data);
             if (event.data && event.data.type === 'stock_data') {
