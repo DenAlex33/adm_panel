@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель</title> <!-- Оставляем только заголовок страницы -->
+    <title>Админ-панель</title>
 
     <style>
         body {
@@ -93,6 +93,10 @@
             background-color: #f2f2f2;
             text-align: left;
         }
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -102,31 +106,41 @@
         <button class="button" onclick="sendCommand('mfc_write_product')">Списание мат товаров</button>
         <button class="button" onclick="sendCommand('generate_report')">Сформировать отчёт о списании</button>
         <div id="data-container"></div>
+        <div id="loading" class="loading">Загрузка...</div>
     </div>
     <footer class="footer">
         <p>Powered by <a href="https://t.me/den_alex" target="_blank">𝕯𝖊𝖓 🅰️🅻🅴🆇</a></p>
     </footer>
 
     <script>
+        // Проверка доступности Telegram WebApp API
         if (window.Telegram && window.Telegram.WebApp) {
             console.log('Telegram Web App API доступен');
             Telegram.WebApp.expand();
         } else {
             console.error('Telegram Web App не поддерживается или объект Telegram.WebApp отсутствует');
+            alert('Telegram Web App не поддерживается в этом браузере.');
         }
 
+        // Отправка команды в бота
         function sendCommand(command) {
+            const loadingElement = document.getElementById('loading');
+            loadingElement.style.display = 'block';
+
             if (window.Telegram && window.Telegram.WebApp) {
                 Telegram.WebApp.sendData(command);
-                alert('Команда "' + command + '" отправлена!');
+                console.log('Команда отправлена:', command);
+                loadingElement.style.display = 'none';
             } else {
                 alert('Telegram Web App не доступен.');
+                loadingElement.style.display = 'none';
             }
         }
 
+        // Отображение данных, полученных из WebApp
         function displayData(data) {
             const container = document.getElementById('data-container');
-            if (data) {
+            if (data && data.length > 0) {
                 let html = '<table class="data-table"><thead><tr><th>Наименование</th><th>Цена</th><th>Количество</th></tr></thead><tbody>';
                 data.forEach(item => {
                     html += `<tr><td>${item.name}</td><td>${item.price}</td><td>${item.quantity}</td></tr>`;
@@ -138,6 +152,7 @@
             }
         }
 
+        // Обработка сообщений от бота
         window.addEventListener('message', function(event) {
             console.log('Сообщение получено:', event.data);
             if (event.data && event.data.type === 'stock_data') {
