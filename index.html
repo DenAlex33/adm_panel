@@ -113,21 +113,19 @@
     </footer>
 
     <script>
-        if (window.Telegram && window.Telegram.WebApp) {
-            console.log('Telegram Web App API доступен');
-            Telegram.WebApp.expand();
-        } else {
-            console.error('Telegram Web App не поддерживается или объект Telegram.WebApp отсутствует');
-            alert('Telegram Web App не поддерживается в этом браузере.');
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.Telegram && window.Telegram.WebApp) {
+                Telegram.WebApp.expand();
+            } else {
+                alert('Telegram Web App не поддерживается.');
+            }
+        });
 
         function sendCommand(command) {
             const loadingElement = document.getElementById('loading');
             loadingElement.style.display = 'block';
-
             if (window.Telegram && window.Telegram.WebApp) {
                 Telegram.WebApp.sendData(command);
-                console.log('Команда отправлена:', command);
                 setTimeout(() => loadingElement.style.display = 'none', 2000);
             } else {
                 alert('Telegram Web App не доступен.');
@@ -150,7 +148,6 @@
         }
 
         window.addEventListener('message', function(event) {
-            console.log('Сообщение получено:', event.data);
             if (event.data && event.data.type === 'stock_data') {
                 displayData(event.data.data);
             }
