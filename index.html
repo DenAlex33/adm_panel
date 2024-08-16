@@ -107,18 +107,22 @@
     </footer>
 
     <script>
-        if (window.Telegram.WebApp) {
+        if (window.Telegram && window.Telegram.WebApp) {
+            console.log('Telegram Web App API доступен');
             Telegram.WebApp.expand();
         } else {
-            alert('Telegram Web App не поддерживается в вашем браузере.');
+            console.error('Telegram Web App не поддерживается или объект Telegram.WebApp отсутствует');
         }
 
         function sendCommand(command) {
-            Telegram.WebApp.sendData(command);
-            alert('Команда "' + command + '" отправлена!');
+            if (window.Telegram && window.Telegram.WebApp) {
+                Telegram.WebApp.sendData(command);
+                alert('Команда "' + command + '" отправлена!');
+            } else {
+                alert('Telegram Web App не доступен.');
+            }
         }
 
-        // Функция для отображения данных на странице
         function displayData(data) {
             const container = document.getElementById('data-container');
             if (data) {
@@ -133,8 +137,8 @@
             }
         }
 
-        // Получаем данные от бота и отображаем их
         window.addEventListener('message', function(event) {
+            console.log('Сообщение получено:', event.data);
             if (event.data && event.data.type === 'stock_data') {
                 displayData(event.data.data);
             }
