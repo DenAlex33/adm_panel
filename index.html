@@ -12,12 +12,26 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            animation: fadeIn 1s ease-in-out;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         h1 {
             color: #007bff;
             margin-top: 50px;
             font-size: 2.5rem;
+            animation: slideIn 1s ease-in-out;
         }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         .container {
             width: 90%;
             max-width: 600px;
@@ -26,7 +40,14 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: zoomIn 1s ease-in-out;
         }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         .button {
             display: inline-block;
             padding: 12px 25px;
@@ -39,20 +60,37 @@
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.3s, transform 0.2s;
+            animation: buttonBounce 0.6s ease-in-out;
         }
+
+        @keyframes buttonBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
         .button:hover {
             background-color: #0056b3;
-            transform: translateY(-2px);
+            transform: translateY(-4px);
         }
+
         .button:active {
             background-color: #004494;
             transform: translateY(0);
         }
+
         .footer {
             margin-top: 30px;
             font-size: 14px;
             color: #666;
+            animation: fadeIn 1.5s ease-in-out;
         }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -63,7 +101,7 @@
         <button class="button" onclick="sendCommand('generate_report')">Сформировать отчёт о списании</button>
     </div>
     <footer class="footer">
-        <p>Powered by <a href="https://t.me/den_alex" target="_blank" style="color: #007bff; text-decoration: none;">𝕯𝖊𝖓 🅰️🅻🅴🆇</a></p>
+        <p>Powered by <a href="https://t.me/den_alex" target="_blank">𝕯𝖊𝖓 🅰️🅻🅴🆇</a></p>
     </footer>
 
     <script>
